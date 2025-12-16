@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" 
+    version="3.1">
+  
+  <display-name>ClassManager</display-name>
+  
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>login.jsp</welcome-file>
+  </welcome-file-list>
+
+  <!-- 主业务 Servlet -->
+  <!-- 1. 用户模块 -->
+  <servlet>
+    <servlet-name>UserServlet</servlet-name>
+    <servlet-class>com.classsys.web.UserServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserServlet</servlet-name>
+    <url-pattern>/user</url-pattern>
+  </servlet-mapping>
+
+  <!-- 2. 学生模块 -->
+  <servlet>
+    <servlet-name>StudentServlet</servlet-name>
+    <servlet-class>com.classsys.web.StudentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>StudentServlet</servlet-name>
+    <url-pattern>/student</url-pattern>
+  </servlet-mapping>
+
+  <!-- 3. 值日模块 -->
+  <servlet>
+    <servlet-name>DutyServlet</servlet-name>
+    <servlet-class>com.classsys.web.DutyServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DutyServlet</servlet-name>
+    <url-pattern>/duty</url-pattern>
+  </servlet-mapping>
+
+  <!-- 4. 活动模块 -->
+  <servlet>
+    <servlet-name>ActivityServlet</servlet-name>
+    <servlet-class>com.classsys.web.ActivityServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ActivityServlet</servlet-name>
+    <url-pattern>/activity</url-pattern>
+  </servlet-mapping>
+
+  <!-- 5. 消息/聊天模块 -->
+  <servlet>
+    <servlet-name>MessageServlet</servlet-name>
+    <servlet-class>com.classsys.web.MessageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MessageServlet</servlet-name>
+    <url-pattern>/message</url-pattern>
+  </servlet-mapping>
+  <mime-mapping>
+    <extension>css</extension>
+    <mime-type>text/css</mime-type>
+  </mime-mapping>
+</web-app>

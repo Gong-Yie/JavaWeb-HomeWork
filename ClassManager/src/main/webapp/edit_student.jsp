@@ -10,7 +10,7 @@
 <body>
     <div class="content-box" style="margin: 50px auto; width: 400px;">
         <h2>编辑学生信息</h2>
-        <form action="main" method="post">
+        <form action="student" method="post">
             <input type="hidden" name="method" value="updateStudent">
             <input type="hidden" name="id" value="${stu.id}">
             <input type="hidden" name="username" value="${stu.username}">

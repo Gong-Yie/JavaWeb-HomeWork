@@ -10,7 +10,7 @@
 <body>
     <div class="content-box" style="width:400px; margin:50px auto;">
         <h2>调整值日时间</h2>
-        <form action="main" method="post">
+        <form action="duty" method="post">
             <input type="hidden" name="method" value="updateDuty">
             <input type="hidden" name="id" value="${stu.id}">
             

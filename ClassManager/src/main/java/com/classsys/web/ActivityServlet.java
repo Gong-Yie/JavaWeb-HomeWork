@@ -15,11 +15,28 @@ import com.classsys.util.DBUtil;
 
 public class ActivityServlet extends BaseServlet {
 
-    // 活动列表
+    // 1. 活动列表 (含查询和统计)
     public String activityList(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String startDate = req.getParameter("startDate");
+        String endDate = req.getParameter("endDate");
+        
         List<Map<String, String>> list = new ArrayList<>();
         Connection conn = DBUtil.getConn();
-        PreparedStatement ps = conn.prepareStatement("SELECT * FROM t_activity");
+        
+        StringBuilder sql = new StringBuilder("SELECT * FROM t_activity WHERE 1=1 ");
+        
+        // 动态拼接日期查询 SQL
+        // 因为 act_date 是 varchar 格式 (yyyy-MM-dd)，可以直接用字符串比较
+        if(startDate != null && !startDate.isEmpty()) {
+            sql.append(" AND act_date >= '").append(startDate).append("'");
+        }
+        if(endDate != null && !endDate.isEmpty()) {
+            sql.append(" AND act_date <= '").append(endDate).append("'");
+        }
+        
+        sql.append(" ORDER BY act_date DESC"); // 按日期倒序
+
+        PreparedStatement ps = conn.prepareStatement(sql.toString());
         ResultSet rs = ps.executeQuery();
         while(rs.next()){
             Map<String, String> m = new HashMap<>();
@@ -31,11 +48,18 @@ public class ActivityServlet extends BaseServlet {
             list.add(m);
         }
         DBUtil.close(conn, ps, rs);
+        
+        // 回传查询条件，方便JSP回显
+        req.setAttribute("startDate", startDate);
+        req.setAttribute("endDate", endDate);
+        // 回传统计数据 (当前查询结果的数量)
+        req.setAttribute("totalCount", list.size());
         req.setAttribute("actList", list);
+        
         return "activity_list.jsp";
     }
 
-    // 跳转表单
+    // 2. 跳转表单
     public String toActivityForm(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String id = req.getParameter("id");
         if(id != null && !id.isEmpty()){
@@ -57,7 +81,7 @@ public class ActivityServlet extends BaseServlet {
         return "activity_form.jsp";
     }
 
-    // 保存
+    // 3. 保存
     public String saveActivity(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String id = req.getParameter("id");
         String title = req.getParameter("title");
@@ -89,7 +113,7 @@ public class ActivityServlet extends BaseServlet {
         return "redirect:activity?method=activityList";
     }
 
-    // 删除
+    // 4. 删除
     public String deleteActivity(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String id = req.getParameter("id");
         Connection conn = DBUtil.getConn();

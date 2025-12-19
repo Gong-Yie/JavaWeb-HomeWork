@@ -22,12 +22,35 @@ public class DutyServlet extends BaseServlet {
         dutyMap.put(4, "星期四"); dutyMap.put(5, "星期五"); dutyMap.put(6, "星期六"); dutyMap.put(7, "星期日");
     }
 
-    // 值日列表
+    // 1. 值日列表 (含查询和统计)
     public String dutyList(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String dayStr = req.getParameter("queryDay");
+        int queryDay = (dayStr != null && !dayStr.isEmpty()) ? Integer.parseInt(dayStr) : 0; // 0代表全部
+
         List<Student> list = new ArrayList<>();
+        
+        // 统计数据：Map<星期几(Integer), 人数(Integer)>
+        Map<Integer, Integer> stats = new HashMap<>();
+        // 初始化统计map，防止没有数据的星期显示null
+        for(int i=1; i<=7; i++) stats.put(i, 0);
+
         Connection conn = DBUtil.getConn();
-        String sql = "SELECT * FROM t_student";
-        PreparedStatement ps = conn.prepareStatement(sql);
+        
+        // --- 查询1：统计每天人数 ---
+        String statSql = "SELECT duty_day, COUNT(*) as cnt FROM t_student GROUP BY duty_day";
+        ResultSet rsStat = conn.createStatement().executeQuery(statSql);
+        while(rsStat.next()){
+            stats.put(rsStat.getInt("duty_day"), rsStat.getInt("cnt"));
+        }
+        
+        // --- 查询2：获取人员列表 ---
+        StringBuilder sql = new StringBuilder("SELECT * FROM t_student WHERE 1=1 ");
+        if(queryDay > 0){
+            sql.append(" AND duty_day = ").append(queryDay);
+        }
+        sql.append(" ORDER BY duty_day ASC");
+        
+        PreparedStatement ps = conn.prepareStatement(sql.toString());
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Student s = new Student();
@@ -37,14 +60,17 @@ public class DutyServlet extends BaseServlet {
             s.setDutyDay(rs.getInt("duty_day"));
             list.add(s);
         }
-        DBUtil.close(conn, ps, rs);
+        DBUtil.close(conn, ps, rs); // rsStat 会自动关闭
         
         req.setAttribute("stList", list);
         req.setAttribute("dutyMap", dutyMap); 
+        req.setAttribute("dutyStats", stats); // 传递统计数据
+        req.setAttribute("queryDay", queryDay); // 回显查询条件
+        
         return "duty_roster.jsp"; 
     }
 
-    // 跳转调整
+    // 2. 跳转调整
     public String toEditDuty(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String id = req.getParameter("id");
         Connection conn = DBUtil.getConn();
@@ -63,7 +89,7 @@ public class DutyServlet extends BaseServlet {
         return "edit_duty.jsp";
     }
 
-    // 执行调整
+    // 3. 执行调整
     public String updateDuty(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String id = req.getParameter("id");
         String dutyDay = req.getParameter("dutyDay");

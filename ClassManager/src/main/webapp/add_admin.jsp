@@ -31,13 +31,7 @@
             
             <p style="color:green; text-align:center; font-size:14px;">${msg}</p>
             
-            <!-- 
-               【关键修复】：
-               1. action="user?method=addAdmin" : 确保能找到 UserServlet 的方法
-               2. 删除了 enctype="multipart/form-data" : 
-                  因为这里只提交纯文本，使用普通表单是最稳定的，
-                  request.getParameter() 就能正确获取到值了。
-            -->
+
             <form action="user?method=addAdmin" method="post">
                 
                 <div style="margin-bottom:15px;">

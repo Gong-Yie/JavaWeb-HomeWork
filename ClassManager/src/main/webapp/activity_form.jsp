@@ -10,7 +10,7 @@
     <div class="content-box" style="width:500px; margin:50px auto;">
         <h2>${empty act ? '发布新活动' : '修改活动信息'}</h2>
         
-        <form action="main" method="post">
+        <form action="activity" method="post">
             <input type="hidden" name="method" value="saveActivity">
             <!-- 如果有id则是修改，没有则是新增 -->
             <input type="hidden" name="id" value="${act.id}">

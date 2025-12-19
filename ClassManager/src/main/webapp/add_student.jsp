@@ -10,7 +10,7 @@
 <body>
     <div class="content-box" style="margin: 50px auto; width: 400px;">
         <h2>录入新学生</h2>
-        <form action="main" method="post">
+        <form action="student" method="post">
             <input type="hidden" name="method" value="addStudent">
             
             <div style="margin-bottom:15px;">

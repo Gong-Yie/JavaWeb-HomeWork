@@ -15,18 +15,18 @@ import com.classsys.util.DBUtil;
 
 public class ActivityServlet extends BaseServlet {
 
-    // 1. 活动列表 (含查询和统计)
+    // 1. 活动列表 (关键词搜索 + 日期范围)
     public String activityList(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String startDate = req.getParameter("startDate");
         String endDate = req.getParameter("endDate");
+        String keyword = req.getParameter("keyword"); // 搜主题/内容/组织者
         
         List<Map<String, String>> list = new ArrayList<>();
         Connection conn = DBUtil.getConn();
         
         StringBuilder sql = new StringBuilder("SELECT * FROM t_activity WHERE 1=1 ");
         
-        // 动态拼接日期查询 SQL
-        // 因为 act_date 是 varchar 格式 (yyyy-MM-dd)，可以直接用字符串比较
+        // 日期查询
         if(startDate != null && !startDate.isEmpty()) {
             sql.append(" AND act_date >= '").append(startDate).append("'");
         }
@@ -34,7 +34,15 @@ public class ActivityServlet extends BaseServlet {
             sql.append(" AND act_date <= '").append(endDate).append("'");
         }
         
-        sql.append(" ORDER BY act_date DESC"); // 按日期倒序
+        // 关键词查询
+        if(keyword != null && !keyword.trim().isEmpty()) {
+            String k = keyword.replace("'", "");
+            sql.append(" AND (title LIKE '%").append(k).append("%'")
+               .append(" OR organizer LIKE '%").append(k).append("%'")
+               .append(" OR content LIKE '%").append(k).append("%')");
+        }
+        
+        sql.append(" ORDER BY act_date DESC");
 
         PreparedStatement ps = conn.prepareStatement(sql.toString());
         ResultSet rs = ps.executeQuery();
@@ -49,10 +57,9 @@ public class ActivityServlet extends BaseServlet {
         }
         DBUtil.close(conn, ps, rs);
         
-        // 回传查询条件，方便JSP回显
         req.setAttribute("startDate", startDate);
         req.setAttribute("endDate", endDate);
-        // 回传统计数据 (当前查询结果的数量)
+        req.setAttribute("keyword", keyword);
         req.setAttribute("totalCount", list.size());
         req.setAttribute("actList", list);
         

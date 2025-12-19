@@ -6,23 +6,14 @@ public class Student {
     private String studentNo;
     private String phone;
     private int dutyDay;
-    // 新增字段
     private String avatar;
     private int classId;
-    private String className; // 用于显示班级名称
-    private String username;  // 关联账号
+    private String className;
+    private String username;
+    private String gender;
 
-    // 请务必使用 Eclipse: Source -> Generate Getters and Setters 自动生成以下字段的方法
-    public String getAvatar() { return avatar; }
-    public void setAvatar(String avatar) { this.avatar = avatar; }
-    public int getClassId() { return classId; }
-    public void setClassId(int classId) { this.classId = classId; }
-    public String getClassName() { return className; }
-    public void setClassName(String className) { this.className = className; }
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
-    
-    // 原有的Getter/Setter保持不变...
+    public String getGender() { return gender; }
+    public void setGender(String gender) { this.gender = gender; }
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public String getName() { return name; }
@@ -33,4 +24,12 @@ public class Student {
     public void setPhone(String phone) { this.phone = phone; }
     public int getDutyDay() { return dutyDay; }
     public void setDutyDay(int dutyDay) { this.dutyDay = dutyDay; }
+    public String getAvatar() { return avatar; }
+    public void setAvatar(String avatar) { this.avatar = avatar; }
+    public int getClassId() { return classId; }
+    public void setClassId(int classId) { this.classId = classId; }
+    public String getClassName() { return className; }
+    public void setClassName(String className) { this.className = className; }
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
 }

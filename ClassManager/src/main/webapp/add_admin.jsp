@@ -38,7 +38,11 @@
                     <label>管理员账号：</label>
                     <input type="text" name="username" placeholder="建议使用 admin_xxx" required style="width:100%; padding:8px;">
                 </div>
-                
+                <div class="input-group" style="margin:10px 0;">
+				    <label>性别：</label>
+				    <label style="margin-right:15px;"><input type="radio" name="gender" value="男" checked> 男</label>
+				    <label><input type="radio" name="gender" value="女"> 女</label>
+				</div>
                 <div style="margin-bottom:15px;">
                     <label>设置密码：</label>
                     <input type="password" name="password" required style="width:100%; padding:8px;">

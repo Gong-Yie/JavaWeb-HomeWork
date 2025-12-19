@@ -7,10 +7,10 @@
     <title>班级活动记录</title>
     <link rel="stylesheet" href="background.css"/>
     <style>
-        .search-bar { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; border: 1px solid #eee; }
-        .search-group { display: flex; align-items: center; gap: 10px; }
-        .stat-badge { background: #e3f2fd; color: #1976d2; padding: 5px 12px; border-radius: 20px; font-size: 14px; font-weight: bold; border: 1px solid #bbdefb; }
-        input[type="date"] { padding: 5px; border: 1px solid #ddd; border-radius: 4px; }
+        .search-bar { background: rgba(255,255,255,0.8); padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; border: 1px solid #eee; flex-wrap: wrap; gap:10px; }
+        .search-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .stat-badge { background: #e3f2fd; color: #1976d2; padding: 5px 12px; border-radius: 20px; font-size: 14px; font-weight: bold; border: 1px solid #bbdefb; white-space: nowrap; }
+        input[type="date"], input[type="text"] { padding: 5px; border: 1px solid #ddd; border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -35,17 +35,21 @@
             <div class="search-bar">
                 <form action="activity" method="get" class="search-group">
                     <input type="hidden" name="method" value="activityList">
-                    <label>时间段查询：</label>
+                    
+                    <input type="text" name="keyword" value="${keyword}" placeholder="搜主题/内容..." style="width:120px;">
+                    
+                    <label>日期：</label>
                     <input type="date" name="startDate" value="${startDate}">
-                    <span>至</span>
+                    <span>-</span>
                     <input type="date" name="endDate" value="${endDate}">
+                    
                     <button type="submit" class="btn btn-edit" style="padding:6px 15px;">查询</button>
                     <a href="activity?method=activityList" class="btn" style="background:#eee; color:#333;">重置</a>
                 </form>
                 
                 <!-- 统计结果 -->
                 <span class="stat-badge">
-                    该时间段共举办活动：${totalCount} 场
+                    共找到：${totalCount} 场
                 </span>
             </div>
 
